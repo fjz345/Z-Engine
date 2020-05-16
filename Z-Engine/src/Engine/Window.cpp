@@ -1,8 +1,8 @@
-#pragma once
-
 #include "zepch.h"
-#include "Logging.h"
 #include "Window.h"
+
+#include "Logging.h"
+
 
 namespace ZE
 {
@@ -24,16 +24,10 @@ namespace ZE
 
 	#ifdef ZE_PLATFORM_WINDOWS
 
-	/*
-
-	Window* Create(std::wstring title, unsigned int width, unsigned int height)
+	Window* Window::Create(std::wstring title, unsigned int width, unsigned int height)
 	{
-		//return new WindowsWindow(gHInstance, gNCmdShow, width, height, false, L"windowName", L"FUCK");
-		//return new WindowsWindow(nullptr, 0, 0, 0, false, L"ASD", L"ASD");
-		return nullptr;
+		return new WindowsWindow(gHInstance, gNCmdShow, width, height, false, L"windowName", L"FUCK");
 	}
-
-	*/
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{

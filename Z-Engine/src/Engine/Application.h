@@ -1,11 +1,13 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "zepch.h"
 #include "Core.h"
+
+
 
 namespace ZE
 {
+	class Window;
 	class ZE_API Application
 	{
 	public:
@@ -15,7 +17,7 @@ namespace ZE
 		void Run();
 
 	private:
-
+		Window* _window = nullptr;
 
 	};
 

@@ -1,19 +1,18 @@
-#pragma once
-
 #include "zepch.h"
-#include "Core.h"
 
 #include "Application.h"
-#include "Logging.h"
+#include "Window.h"
 
 extern ZE::Application* ZE::CreateApplication();
 
-#if 0//ZE_PLATFORM_WINDOWS
+#ifdef ZE_PLATFORM_WINDOWS
 
+extern HINSTANCE ZE::gHInstance;
+extern int ZE::gNCmdShow;
 int WINAPI main(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-	//gHInstance = hInstance;
-	//gNCmdShow = nCmdShow;
+	ZE::gHInstance = hInstance;
+	ZE::gNCmdShow = nCmdShow;
 
 	ZE::Application* app = ZE::CreateApplication();
 	app->Run();

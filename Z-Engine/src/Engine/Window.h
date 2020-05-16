@@ -1,6 +1,5 @@
 #pragma once
 
-#include "zepch.h"
 #include "Core.h"
 
 
@@ -11,6 +10,9 @@ namespace ZE
 	class ZE_API Window
 	{
 	public:
+		// Platform specific
+		static Window* Create(std::wstring title, unsigned int width, unsigned int height);
+
 		virtual ~Window() {}
 
 		virtual void Update() = 0;
@@ -33,14 +35,13 @@ namespace ZE
 		bool _fullscreen = false;
 	};
 
-	// Platform specific
-	//static Window* Create(std::wstring title, unsigned int width, unsigned int height);
+	
 
 
 #ifdef ZE_PLATFORM_WINDOWS
 
-	extern HINSTANCE gHInstance;
-	extern int gNCmdShow;
+	HINSTANCE gHInstance;
+	int gNCmdShow;
 
 	class WindowsWindow : public Window
 	{
