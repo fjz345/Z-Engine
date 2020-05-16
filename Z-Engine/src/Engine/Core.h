@@ -1,7 +1,9 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include <iostream>
+#include "zepch.h"
+
+#include "Logging.h"
 
 #ifdef ZE_PLATFORM_WINDOWS
 	#ifdef ZE_BUILD_DLL
@@ -14,14 +16,9 @@
 #endif
 
 
-#ifdef _DEBUG
-	#define ZE_ERROR(msg) std::cout << "[ERROR]: " << msg << std::endl;
-#else
-	#define ZE_ERROR(msg)
-#endif
 
 
 
+#define BIT(x) (1 << x)
 
-
-#endif
+#endif // CORE_H

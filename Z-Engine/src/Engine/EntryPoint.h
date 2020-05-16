@@ -1,5 +1,8 @@
 #pragma once
 
+#include "zepch.h"
+#include "Application.h"
+
 #ifdef ZE_PLATFORM_WINDOWS
 
 extern ZE::Application* ZE::CreateApplication();

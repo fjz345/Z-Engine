@@ -1,3 +1,4 @@
+#include "zepch.h"
 #include <ZEngine.h>
 
 
@@ -20,6 +21,12 @@ private:
 
 ZE::Application* ZE::CreateApplication()
 {
-	ZE_ERROR("hej");
+	std::wstring h = L"WSTRING";
+
+
+	ZE_ERROR(h);
+	ZE_WARNING(h);
+	ZE_LOG(h);
+
 	return new Sandbox();
 }
