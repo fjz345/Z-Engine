@@ -1,6 +1,8 @@
 #include <ZEngine.h>
 
 
+
+// FIXA WINMAIN HÄR
 class Sandbox : public ZE::Application
 {
 public:
@@ -27,5 +29,7 @@ ZE::Application* ZE::CreateApplication()
 	ZE_WARNING(h);
 	ZE_LOG(h);
 
-	return new Sandbox();
+	ZE::Application* a = new Sandbox();
+
+	return a;
 }

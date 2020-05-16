@@ -7,8 +7,8 @@ extern ZE::Application* ZE::CreateApplication();
 
 #ifdef ZE_PLATFORM_WINDOWS
 
-extern HINSTANCE ZE::gHInstance;
-extern int ZE::gNCmdShow;
+HINSTANCE ZE::gHInstance;
+int ZE::gNCmdShow;
 int WINAPI main(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
 	ZE::gHInstance = hInstance;

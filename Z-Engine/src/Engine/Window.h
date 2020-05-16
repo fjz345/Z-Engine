@@ -1,8 +1,8 @@
-#pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
+#include "zepch.h"
 #include "Core.h"
-
-
 
 namespace ZE
 {
@@ -20,9 +20,9 @@ namespace ZE
 		virtual void SetWindowTitle(std::wstring newTitle) const = 0;
 		virtual bool ExitWindow() const = 0;
 
-		virtual bool IsFullscreen() const;
-		virtual unsigned int GetWidth() const;
-		virtual unsigned int GetHeight() const;
+		inline bool IsFullscreen() const;
+		inline unsigned int GetWidth() const;
+		inline unsigned int GetHeight() const;
 
 	protected:
 		Window(std::wstring title, unsigned int width, unsigned int height, bool fullscreen)
@@ -39,9 +39,8 @@ namespace ZE
 
 
 #ifdef ZE_PLATFORM_WINDOWS
-
-	HINSTANCE gHInstance;
-	int gNCmdShow;
+	static HINSTANCE gHInstance;
+	static int gNCmdShow;
 
 	class WindowsWindow : public Window
 	{
@@ -67,3 +66,5 @@ namespace ZE
 
 
 }
+
+#endif // WINDOW_H

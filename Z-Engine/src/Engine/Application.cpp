@@ -1,7 +1,7 @@
 #include "zepch.h"
 #include "Application.h"
 
-//#include "Window.h"
+#include "Window.h"
 
 namespace ZE
 {

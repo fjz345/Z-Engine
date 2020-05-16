@@ -107,7 +107,7 @@
   <ItemGroup>
     <ClInclude Include="src\Engine\Application.h" />
     <ClInclude Include="src\Engine\Core.h" />
-    <ClInclude Include="src\Engine\EntryPoint.h" />
+    <ClInclude Include="src\Engine\EntryPoint.cpp" />
     <ClInclude Include="src\Engine\Event.h" />
     <ClInclude Include="src\Engine\Logging.h" />
     <ClInclude Include="src\Engine\Window.h" />
