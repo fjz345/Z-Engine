@@ -2,8 +2,10 @@
 #define CORE_H
 
 #include "zepch.h"
-
-#include "Logging.h"
+#ifdef ZE_PLATFORM_WINDOWS
+//HINSTANCE gHInstance;
+//int gNCmdShow;
+#endif
 
 #ifdef ZE_PLATFORM_WINDOWS
 	#ifdef ZE_BUILD_DLL
@@ -14,7 +16,6 @@
 #else
 	#error Only supports Windows!
 #endif
-
 
 
 
