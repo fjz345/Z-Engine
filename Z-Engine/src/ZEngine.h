@@ -8,5 +8,5 @@
 #include "Engine/Logging.h"
 
 // ----------- Entry Point --------------
-#include "Engine/EntryPoint.h"
+#include "Engine/win32/Win32Main.cpp"
 // --------------------------------------

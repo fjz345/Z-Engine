@@ -1,7 +1,6 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
-#include "zepch.h"
 
 #define CreateLog(type, prefix)	void Log##type(std::string msg) {std::cout << ##prefix << msg << std::endl;}\
 								void Log##type(std::wstring msg) {std::wcout << ##prefix << msg << std::endl;}

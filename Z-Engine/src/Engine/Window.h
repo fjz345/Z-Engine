@@ -1,7 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "zepch.h"
 #include "Core.h"
 
 namespace ZE
@@ -35,34 +34,6 @@ namespace ZE
 		bool _fullscreen = false;
 	};
 
-	
-
-
-#ifdef ZE_PLATFORM_WINDOWS
-	static HINSTANCE gHInstance;
-	static int gNCmdShow;
-
-	class WindowsWindow : public Window
-	{
-	public:
-		WindowsWindow(HINSTANCE hInstance, int nCmdShow, unsigned int screenWidth, unsigned int screenHeight, bool fullscreen, LPCTSTR windowName, LPCTSTR windowTitle);
-
-		~WindowsWindow() {}
-
-		void Update() {}
-
-		void SetWindowTitle(std::wstring newTitle) const { SetWindowTextW(this->_hwnd, newTitle.c_str()); }
-		bool ExitWindow() const;
-
-	private:
-		HWND _hwnd = nullptr;
-	};
-
-
-
-#else
-	ZE_ASSERT(false, "Fix support for more than windows")
-#endif
 
 
 }

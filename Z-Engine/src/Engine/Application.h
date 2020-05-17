@@ -1,11 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "zepch.h"
 #include "Core.h"
-
-
-std::string globalVariable = "HEJ";
 
 namespace ZE
 {
@@ -18,7 +14,6 @@ namespace ZE
 		virtual ~Application();
 
 		void Run();
-
 
 	private:
 		Window* _window = nullptr;

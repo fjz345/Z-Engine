@@ -61,8 +61,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>zepch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>src;</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>
-      </ForcedIncludeFiles>
+      <ForcedIncludeFiles>zepch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,8 +86,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>zepch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>src;</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>
-      </ForcedIncludeFiles>
+      <ForcedIncludeFiles>zepch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,15 +105,18 @@
   <ItemGroup>
     <ClInclude Include="src\Engine\Application.h" />
     <ClInclude Include="src\Engine\Core.h" />
-    <ClInclude Include="src\Engine\EntryPoint.cpp" />
+    <ClInclude Include="src\Engine\win32\Win32Main.cpp" />
     <ClInclude Include="src\Engine\Event.h" />
     <ClInclude Include="src\Engine\Logging.h" />
+    <ClInclude Include="src\Engine\win32\Win32Window.h" />
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\zepch.h" />
     <ClInclude Include="src\ZEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Application.cpp" />
+    <ClCompile Include="src\Engine\win32\Win32Functions.h" />
+    <ClCompile Include="src\Engine\win32\Win32Window.cpp" />
     <ClCompile Include="src\Engine\Window.cpp" />
     <ClCompile Include="src\zepch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
