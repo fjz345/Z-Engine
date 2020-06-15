@@ -1,7 +1,5 @@
 #include "Win32Window.h"
 
-#include "../Logging.h"
-
 #include "Win32Functions.h"
 
 namespace ZE
@@ -9,7 +7,7 @@ namespace ZE
 	Window* Window::Create(std::wstring title, unsigned int width, unsigned int height)
 	{
 		HINSTANCE hInstance = GetModuleHandle(NULL);
-		return new Win32Window(hInstance, 1, width, height, false, L"windowName", L"FUCK");
+		return new Win32Window(hInstance, 1, width, height, false, L"windowName", title.c_str());
 	}
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -80,28 +78,28 @@ namespace ZE
 		wc.lpszClassName = windowName;
 		wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-		ZE_ASSERT(RegisterClassEx(&wc), ZE_ERROR("Error registering window class"))
+		ZE_ASSERT(RegisterClassEx(&wc), ZE_ERROR("Error registering window class"));
 
-			// This structure describes the window
-			this->_hwnd = CreateWindowEx(NULL,
-				windowName,
-				windowTitle,
-				WS_OVERLAPPEDWINDOW,
-				CW_USEDEFAULT, CW_USEDEFAULT,
-				screenWidth, screenHeight,
-				NULL,
-				NULL,
-				hInstance,
-				NULL);
+		// This structure describes the window
+		this->_hwnd = CreateWindowEx(NULL,
+			windowName,
+			windowTitle,
+			WS_OVERLAPPEDWINDOW,
+			CW_USEDEFAULT, CW_USEDEFAULT,
+			screenWidth, screenHeight,
+			NULL,
+			NULL,
+			hInstance,
+			NULL);
 
 		// If the windowhandle was unsuccesful
-		ZE_ASSERT(this->_hwnd, ZE_ERROR("Error creating window"))
+		ZE_ASSERT(this->_hwnd, ZE_ERROR("Error creating window"));
 
-			// Remove the topbar of the window if we are in fullscreen
-			if (this->_fullscreen)
-			{
-				SetWindowLong(this->_hwnd, GWL_STYLE, 0);
-			}
+		// Remove the topbar of the window if we are in fullscreen
+		if (this->_fullscreen)
+		{
+			SetWindowLong(this->_hwnd, GWL_STYLE, 0);
+		}
 
 		ShowWindow(this->_hwnd, nCmdShow);
 		UpdateWindow(this->_hwnd);

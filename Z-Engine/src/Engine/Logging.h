@@ -1,12 +1,11 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+#include <string>
+#include <iostream>
 
-#define CreateLog(type, prefix)	void Log##type(std::string msg) {std::cout << ##prefix << msg << std::endl;}\
-								void Log##type(std::wstring msg) {std::wcout << ##prefix << msg << std::endl;}
-
-
-
+#define CreateLog(type, prefix)	static void ZE_Log##type(std::string msg) {std::cout << ##prefix << msg << std::endl;}\
+								static void ZE_Log##type(std::wstring msg) {std::wcout << ##prefix << msg << std::endl;}
 
 #ifdef _DEBUG
 	CreateLog(Error, "[ERROR]: ")
@@ -15,13 +14,13 @@
 
 	#define ZE_ENABLE_ASSERTS 1
 
-	#define ZE_ERROR(msg) LogError(msg);
-	#define ZE_WARNING(msg) LogWarning(msg);
-	#define ZE_LOG(msg) Log(msg);
+	#define ZE_ERROR(msg) ZE_LogError(msg);
+	#define ZE_WARNING(msg) ZE_LogWarning(msg);
+	#define ZE_LOG(msg) ZE_Log(msg);
 #else
 	#define ZE_ERROR(msg)
 	#define ZE_WARNING(msg)
-	#define ZE_LOG(msg)
+	#define (msg)
 #endif
 
 

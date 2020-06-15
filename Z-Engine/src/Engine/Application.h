@@ -6,6 +6,7 @@
 namespace ZE
 {
 	class Window;
+	class Renderer;
 
 	class ZE_API Application
 	{
@@ -14,9 +15,12 @@ namespace ZE
 		virtual ~Application();
 
 		void Run();
+		void Update(double dt);
 
 	private:
 		Window* _window = nullptr;
+		Renderer* _renderer = nullptr;
+		bool _isRunning = true;
 
 	};
 

@@ -10,5 +10,6 @@ int WINAPI main(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 	ZE::Application* app = ZE::CreateApplication();
 
 	app->Run();
+
 	delete app;
 }

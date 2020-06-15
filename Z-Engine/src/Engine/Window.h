@@ -25,7 +25,7 @@ namespace ZE
 
 	protected:
 		Window(std::wstring title, unsigned int width, unsigned int height, bool fullscreen)
-			: _title(title), _width(width), _height(height) {}
+			: _title(title), _width(width), _height(height), _fullscreen(fullscreen) {}
 
 		unsigned int _width = 800;
 		unsigned int _height = 600;
