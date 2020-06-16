@@ -20,7 +20,7 @@
 #else
 	#define ZE_ERROR(msg)
 	#define ZE_WARNING(msg)
-	#define (msg)
+	#define ZE_LOG(msg)
 #endif
 
 

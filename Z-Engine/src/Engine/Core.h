@@ -11,19 +11,6 @@
 	#error Only supports Windows!
 #endif
 
-#define NUM_SWAP_BUFFERS 2
-
-#define SAFE_RELEASE(p)			\
-	{								\
-		if ((*p))					\
-		{							\
-			(*p)->Release();		\
-			(*p) = NULL;			\
-		}							\
-	}
-
-
-
 
 
 #endif // CORE_H

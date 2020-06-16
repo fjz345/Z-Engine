@@ -11,6 +11,8 @@ namespace ZE
 
 		void Update() {}
 
+		inline HWND* GetHWND() { return &_hwnd; }
+
 		void SetWindowTitle(std::wstring newTitle) const { SetWindowTextW(this->_hwnd, newTitle.c_str()); }
 		bool ExitWindow() const;
 

@@ -39,3 +39,14 @@
 
 // STUFF
 #define BIT(x) (1 << x)
+
+#define NUM_SWAP_BUFFERS 2
+
+#define SAFE_RELEASE(p)			\
+	{								\
+		if ((*p))					\
+		{							\
+			(*p)->Release();		\
+			(*p) = NULL;			\
+		}							\
+	}

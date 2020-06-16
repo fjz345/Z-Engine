@@ -109,6 +109,11 @@
     <ClInclude Include="src\Engine\DX12\CommandRecorder.h" />
     <ClInclude Include="src\Engine\DX12\DescriptorHeap.h" />
     <ClInclude Include="src\Engine\DX12\DX12Renderer.h" />
+    <ClInclude Include="src\Engine\DX12\PipelineState.h" />
+    <ClInclude Include="src\Engine\DX12\RenderTarget.h" />
+    <ClInclude Include="src\Engine\DX12\RootSignature.h" />
+    <ClInclude Include="src\Engine\DX12\Shader.h" />
+    <ClInclude Include="src\Engine\DX12\SwapChain.h" />
     <ClInclude Include="src\Engine\Renderer.h" />
     <ClInclude Include="src\Engine\Timer.h" />
     <ClInclude Include="src\Engine\win32\Win32Main.cpp" />
@@ -124,6 +129,11 @@
     <ClCompile Include="src\Engine\DX12\CommandRecorder.cpp" />
     <ClCompile Include="src\Engine\DX12\DescriptorHeap.cpp" />
     <ClCompile Include="src\Engine\DX12\DX12Renderer.cpp" />
+    <ClCompile Include="src\Engine\DX12\PipelineState.cpp" />
+    <ClCompile Include="src\Engine\DX12\RenderTarget.cpp" />
+    <ClCompile Include="src\Engine\DX12\RootSignature.cpp" />
+    <ClCompile Include="src\Engine\DX12\Shader.cpp" />
+    <ClCompile Include="src\Engine\DX12\SwapChain.cpp" />
     <ClCompile Include="src\Engine\Timer.cpp" />
     <ClCompile Include="src\Engine\win32\Win32Functions.h" />
     <ClCompile Include="src\Engine\win32\Win32Window.cpp" />
@@ -132,6 +142,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Engine\DX12\HLSL\test.ps" />
+    <None Include="src\Engine\DX12\HLSL\test.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

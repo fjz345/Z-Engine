@@ -3,6 +3,10 @@
 #include "../Renderer.h"
 
 #include "DescriptorHeap.h"
+#include "CommandRecorder.h"
+#include "SwapChain.h"
+#include "RootSignature.h"
+#include "PipelineState.h"
 
 namespace ZE
 {
@@ -19,21 +23,27 @@ namespace ZE
 		ID3D12Device5* device = nullptr;
 
 		// Command Queue
-		std::map<D3D12_COMMAND_LIST_TYPE, ID3D12CommandQueue*> commandQueues;
+		ID3D12CommandQueue* commandQueue = nullptr;
 		
-		// Command List
-		std::vector<ID3D12CommandList*> directCommandLists[NUM_SWAP_BUFFERS];
-
-		// Command Allocator
-
+		// CommandRecorder
+		CommandRecorder* commandRecorder = nullptr;
 
 		// DescriptorHeap
-		DescriptorHeap* descriptorHeap = nullptr;
+		DescriptorHeap* commonHeap = nullptr;
+
+		// SwapChain
+		SwapChain* swapChain = nullptr;
+
+		// TEMP
+		RootSignature* rootSig = nullptr;
+		PipelineState* pipelineState = nullptr;
 
 		// Fences
 		HANDLE eventHandle = nullptr;
 		ID3D12Fence1* fenceFrame = nullptr;
 		UINT64 fenceFrameValue = 0;
+
+		unsigned int frameCounter = 0;
 	};
 
 	
