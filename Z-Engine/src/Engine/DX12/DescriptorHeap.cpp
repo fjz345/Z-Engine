@@ -9,7 +9,7 @@ ZE::DescriptorHeap::DescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_T
 
     HRESULT hr = device->CreateDescriptorHeap(&Desc, IID_PPV_ARGS(&this->_dHeap));
 
-    //ZE_ASSERT(hr);
+    
 
     _hCPUHeapStart = _dHeap->GetCPUDescriptorHandleForHeapStart();
     _hGPUHeapStart = _dHeap->GetGPUDescriptorHandleForHeapStart();

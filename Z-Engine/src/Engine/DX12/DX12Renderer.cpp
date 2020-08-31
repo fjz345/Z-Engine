@@ -20,6 +20,7 @@ namespace ZE
 //Enable the D3D12 debug layer.
 		ID3D12Debug* debugController = nullptr;
 
+
 #ifdef STATIC_LINK_DEBUGSTUFF
 		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 		{
@@ -103,11 +104,6 @@ namespace ZE
 
 
 
-
-
-
-
-		
 
 
 

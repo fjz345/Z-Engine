@@ -23,9 +23,11 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 	}
 
 	//Create descriptor
+
+	/*
 	DXGI_SWAP_CHAIN_DESC1 scDesc = {};
-	scDesc.Width = 0;
-	scDesc.Height = 0;
+	scDesc.Width = this->width;
+	scDesc.Height = this->height;
 	scDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	scDesc.Stereo = FALSE;
 	scDesc.SampleDesc.Count = 1;
@@ -37,8 +39,23 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 	scDesc.Flags = 0;
 	scDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
+
+	*/
+
+	DXGI_SWAP_CHAIN_DESC1 scDesc = {};
+	scDesc.BufferCount = NUM_SWAP_BUFFERS;
+	scDesc.Width = width;
+	scDesc.Height = height;
+	scDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	scDesc.SampleDesc.Count = 1;
+
 	IDXGISwapChain1* swapChain1 = nullptr;
-	if (SUCCEEDED(factory->CreateSwapChainForHwnd(directQueue, *hwnd, &scDesc, nullptr, nullptr, &swapChain1)))
+	HRESULT a = S_OK;
+	
+	a = factory->CreateSwapChainForHwnd(directQueue, *hwnd, &scDesc, nullptr, nullptr, &swapChain1);
+	if (SUCCEEDED(a))
 	{
 		if (SUCCEEDED(swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain))))
 		{

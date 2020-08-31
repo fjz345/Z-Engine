@@ -37,6 +37,8 @@ namespace ZE
 
 	void PipelineState::CreateShader(std::wstring fileName, ShaderType type)
 	{
+		// TODO: better path management
+		fileName = L"../" + fileName;
 
 		if (type == ShaderType::VS)
 		{

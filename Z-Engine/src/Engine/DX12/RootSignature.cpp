@@ -24,7 +24,8 @@ ZE::RootSignature::~RootSignature()
 
 void ZE::RootSignature::SetupRootParmas()
 {
-	D3D12_ROOT_PARAMETER rootParams[RS::NUM_PARAMS] {};
+	// TODO: RS::NUM_PARAMS = 16, fel skall vara 1
+	D3D12_ROOT_PARAMETER rootParams[1] {};
 
 	rootParams[RS::RC32_0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
 	rootParams[RS::RC32_0].Constants.ShaderRegister = 0; // b0 - b15
@@ -49,11 +50,13 @@ void ZE::RootSignature::SetupRootParmas()
 	// ssd.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	// rsDesc.pStaticSamplers = &ssd;
 
-	HRESULT hr = D3D12SerializeRootSignature(
+	ID3DBlob* errorMessages = nullptr;
+	HRESULT hr = S_OK;
+	hr = D3D12SerializeRootSignature(
 		&rsDesc,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		&this->blob,
-		nullptr);
+		&errorMessages);
 
 	if (hr != S_OK)
 	{

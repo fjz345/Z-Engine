@@ -78,7 +78,8 @@ namespace ZE
 		wc.lpszClassName = windowName;
 		wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-		ZE_ASSERT(RegisterClassEx(&wc), ZE_ERROR("Error registering window class"));
+		auto ret = RegisterClassEx(&wc);
+		ZE_ASSERT(ret, ZE_ERROR("Error registering window class"))
 
 		// This structure describes the window
 		this->_hwnd = CreateWindowEx(NULL,
@@ -91,9 +92,9 @@ namespace ZE
 			NULL,
 			hInstance,
 			NULL);
-
+		
 		// If the windowhandle was unsuccesful
-		ZE_ASSERT(this->_hwnd, ZE_ERROR("Error creating window"));
+		ZE_ASSERT(this->_hwnd, ZE_ERROR("Error creating window"))
 
 		// Remove the topbar of the window if we are in fullscreen
 		if (this->_fullscreen)

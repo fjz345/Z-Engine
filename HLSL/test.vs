@@ -1,4 +1,3 @@
-#include "../structs.h"
 
 struct VS_OUT
 {
