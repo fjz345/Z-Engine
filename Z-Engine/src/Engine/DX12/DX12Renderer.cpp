@@ -122,7 +122,7 @@ namespace ZE
 
 		device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&this->fenceFrame));
 
-		this->fenceFrameValue = 1;
+		this->fenceFrameValue = 0;
 
 		// Event handle to use for GPU synchronization
 		this->eventHandle = CreateEvent(0, false, false, 0);
@@ -132,13 +132,54 @@ namespace ZE
 
 
 		// Create Main DepthBuffer
-		//this->CreateDepthBuffer();
+
+		// Create resource
+		D3D12_RESOURCE_DESC resourceDesc = {};
+		resourceDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		resourceDesc.Width = _renderTarget->GetWidth();
+		resourceDesc.Height = _renderTarget->GetHeight();
+		resourceDesc.DepthOrArraySize = 1;
+		resourceDesc.MipLevels = 0;
+		resourceDesc.SampleDesc.Count = 1;
+		resourceDesc.SampleDesc.Quality = 0;
+		resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+		resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+		resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+		D3D12_CLEAR_VALUE clearValue = {};
+		clearValue.Format = DXGI_FORMAT_D32_FLOAT;
+		clearValue.DepthStencil.Depth = 1;
+		clearValue.DepthStencil.Stencil = 0;
+
+
+		// Create descriptorHeap for the dsv
+		this->dsvHeap = new DescriptorHeap(this->device, D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
+
+		this->depthResource = new Resource(
+			device,
+			&resourceDesc,
+			&clearValue,
+			L"Resource_Depth",
+			D3D12_RESOURCE_STATE_DEPTH_WRITE);
+
+		D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
+		depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+		depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
+
+		D3D12_CPU_DESCRIPTOR_HANDLE cdh = dsvHeap->GetCDHAt(0);
+		device->CreateDepthStencilView(depthResource->GetID3D12Resource1(), &depthStencilDesc, cdh);
+
+
+
+		
+		
 
 
 		
 
-
-
+		// Create Command Allocator/Command List
+		this->commandRecorder = new CommandRecorder(this->device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 
 
 		// Create Rootsignature
@@ -160,7 +201,7 @@ namespace ZE
 		gpsd.SampleMask = UINT_MAX;
 		// Rasterizer behaviour
 		gpsd.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-		gpsd.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+		gpsd.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 
 		// Specify Blend descriptions
 		D3D12_RENDER_TARGET_BLEND_DESC defaultRTdesc = {
@@ -190,13 +231,12 @@ namespace ZE
 
 		pipelineState = new PipelineState(device, rootSig, L"HLSL/test.vs", L"HLSL/test.ps", &gpsd);
 
+		
 
 
 
-
-		// Create DescriptorHeap
-		//this->InitDescriptorHeap();
-
+		// Create Main DescriptorHeap
+		this->commonHeap = new DescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 100, true);
 	}
 
 	void DX12Renderer::Render(double dt)
@@ -212,13 +252,13 @@ namespace ZE
 
 		commandAllocator->Reset();
 		commandList->Reset(commandAllocator, NULL);
-
+		
 		commandList->SetGraphicsRootSignature(this->rootSig->GetRootSig());
-
+		
 		ID3D12DescriptorHeap* bindlessHeap = this->commonHeap->GetID3D12DescriptorHeap();
 		commandList->SetDescriptorHeaps(1, &bindlessHeap);
 
-		commandList->SetGraphicsRootDescriptorTable(RS::RC32_0, this->commonHeap->GetGDHAt(0));
+		commandList->SetGraphicsRootDescriptorTable(RS::CBVS, this->commonHeap->GetGDHAt(0));
 
 		// Change state on front/backbuffer
 		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
@@ -227,19 +267,18 @@ namespace ZE
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 		DescriptorHeap* renderTargetHeap = renderTarget->GetDescriptorHeap();
-		//DescriptorHeap* depthBufferHeap = this->depthBuffer->GetDescriptorHeap();
+		DescriptorHeap* depthBufferHeap = this->dsvHeap;
 
 
 		D3D12_CPU_DESCRIPTOR_HANDLE cdh = renderTargetHeap->GetCDHAt(backBufferIndex);
-		//D3D12_CPU_DESCRIPTOR_HANDLE dsh = depthBufferHeap->GetCDHAt(0);
+		D3D12_CPU_DESCRIPTOR_HANDLE dsh = depthBufferHeap->GetCDHAt(0);
 
-		//commandList->OMSetRenderTargets(1, &cdh, true, &dsh);
-		commandList->OMSetRenderTargets(1, &cdh, true, nullptr);
+		commandList->OMSetRenderTargets(1, &cdh, true, &dsh);
 
 
 		float clearColor[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 		commandList->ClearRenderTargetView(cdh, clearColor, 0, nullptr);
-		//commandList->ClearDepthStencilView(dsh, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		commandList->ClearDepthStencilView(dsh, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		D3D12_VIEWPORT* viewPort = renderTarget->GetViewPort();
 		D3D12_RECT* rect = renderTarget->GetScissorRect();
@@ -252,6 +291,7 @@ namespace ZE
 
 		// Draw -----------
 
+		commandList->DrawInstanced(3, 1, 0, 0);
 
 		// ----------------
 
@@ -263,7 +303,40 @@ namespace ZE
 			D3D12_RESOURCE_STATE_PRESENT));
 
 		commandList->Close();
+
+		ID3D12CommandList* commandLists[1] = { commandList };
+		commandQueue->ExecuteCommandLists(1, commandLists);
+
+		dx12SwapChain->Present(0, 0);
+
+		WaitForGPU();
 	}
 
+	void DX12Renderer::WaitForFrame(unsigned int framesToBeAhead)
+	{
+		static constexpr unsigned int nrOfFenceChangesPerFrame = 1;
+		unsigned int fenceValuesToBeAhead = framesToBeAhead * nrOfFenceChangesPerFrame;
+
+		//Wait if the CPU is "framesToBeAhead" number of frames ahead of the GPU
+		if (this->fenceFrame->GetCompletedValue() < this->fenceFrameValue - fenceValuesToBeAhead)
+		{
+			this->fenceFrame->SetEventOnCompletion(this->fenceFrameValue - fenceValuesToBeAhead, this->eventHandle);
+			WaitForSingleObject(this->eventHandle, INFINITE);
+		}
+	}
+	void DX12Renderer::WaitForGPU()
+	{
+		// Signal and increment the fence value.
+		unsigned int oldFenceValue = this->fenceFrameValue;
+		this->commandQueue->Signal(this->fenceFrame, oldFenceValue);
+		this->fenceFrameValue++;
+
+		// Wait until command queue is done.
+		if (this->fenceFrame->GetCompletedValue() < oldFenceValue)
+		{
+			this->fenceFrame->SetEventOnCompletion(oldFenceValue, eventHandle);
+			WaitForSingleObject(eventHandle, INFINITE);
+		}
+	}
 }
 

@@ -23,25 +23,7 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 	}
 
 	//Create descriptor
-
-	/*
-	DXGI_SWAP_CHAIN_DESC1 scDesc = {};
-	scDesc.Width = this->width;
-	scDesc.Height = this->height;
-	scDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	scDesc.Stereo = FALSE;
-	scDesc.SampleDesc.Count = 1;
-	scDesc.SampleDesc.Quality = 0;
-	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	scDesc.BufferCount = NUM_SWAP_BUFFERS;
-	scDesc.Scaling = DXGI_SCALING_NONE;
-	scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	scDesc.Flags = 0;
-	scDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-
-
-	*/
-
+	
 	DXGI_SWAP_CHAIN_DESC1 scDesc = {};
 	scDesc.BufferCount = NUM_SWAP_BUFFERS;
 	scDesc.Width = width;

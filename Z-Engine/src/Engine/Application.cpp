@@ -13,7 +13,6 @@ namespace ZE
 		Timer::Init();
 		_window = Window::Create(L"HEJ", 800, 600);
 		_renderer = Renderer::Create(_window);
-
 	}
 
 	Application::~Application()
@@ -33,13 +32,13 @@ namespace ZE
 			double now_dt = appTimer.GetElapsedTime();
 			dt = now_dt - last_dt;
 			last_dt = now_dt;
-			OutputDebugStringW(L"Runned:\n");
 
 			// Update
 
 			_window->Update();
 
 			// Render
+			_renderer->Render(dt);
 
 		}
 

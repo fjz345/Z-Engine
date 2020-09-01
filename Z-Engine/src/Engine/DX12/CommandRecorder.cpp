@@ -32,5 +32,5 @@ ID3D12GraphicsCommandList5* ZE::CommandRecorder::GetCommandList(int index)
 
 ID3D12CommandAllocator* ZE::CommandRecorder::GetCommandAllocator(int index)
 {
-	return commandAllocators[index];
+	return this->commandAllocators[index];
 }

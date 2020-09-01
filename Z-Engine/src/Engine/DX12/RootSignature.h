@@ -21,6 +21,7 @@ namespace ZE
 		RC32_13,
 		RC32_14,
 		RC32_15,
+		CBVS,
 		// Per Lampor // Per Scene
 		// Per Object
 

@@ -19,7 +19,6 @@ namespace ZE
 
         inline D3D12_GPU_DESCRIPTOR_HANDLE GetGDHAt(UINT index)
         {
-            assert(_desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
             D3D12_GPU_DESCRIPTOR_HANDLE atGPU;
             atGPU.ptr = _hGPUHeapStart.ptr + index * _handleIncrementSize;
             return atGPU;

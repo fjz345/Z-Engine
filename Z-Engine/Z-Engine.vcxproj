@@ -115,6 +115,7 @@
     <ClInclude Include="src\Engine\DX12\DX12Renderer.h" />
     <ClInclude Include="src\Engine\DX12\PipelineState.h" />
     <ClInclude Include="src\Engine\DX12\RenderTarget.h" />
+    <ClInclude Include="src\Engine\DX12\Resource.h" />
     <ClInclude Include="src\Engine\DX12\RootSignature.h" />
     <ClInclude Include="src\Engine\DX12\Shader.h" />
     <ClInclude Include="src\Engine\DX12\SwapChain.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="src\Engine\DX12\DX12Renderer.cpp" />
     <ClCompile Include="src\Engine\DX12\PipelineState.cpp" />
     <ClCompile Include="src\Engine\DX12\RenderTarget.cpp" />
+    <ClCompile Include="src\Engine\DX12\Resource.cpp" />
     <ClCompile Include="src\Engine\DX12\RootSignature.cpp" />
     <ClCompile Include="src\Engine\DX12\Shader.cpp" />
     <ClCompile Include="src\Engine\DX12\SwapChain.cpp" />

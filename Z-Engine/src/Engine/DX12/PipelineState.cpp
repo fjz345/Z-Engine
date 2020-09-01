@@ -4,6 +4,8 @@ namespace ZE
 {
 	PipelineState::PipelineState(ID3D12Device5* device, RootSignature* rootSignature, LPCWSTR VSName, LPCWSTR PSName, D3D12_GRAPHICS_PIPELINE_STATE_DESC* gpsd)
 	{
+		this->name = L"GraphicsPSO";
+
 		// Set the rootSignature in the pipeline state object descriptor
 		this->gpsd = *gpsd;
 
@@ -23,7 +25,7 @@ namespace ZE
 		// Create pipelineStateObject
 		HRESULT hr = device->CreateGraphicsPipelineState(&this->gpsd, IID_PPV_ARGS(&this->PSO));
 
-		this->PSO->SetName(L"GraphicsPSO");
+		this->PSO->SetName(this->name);
 		if (!SUCCEEDED(hr))
 		{
 			OutputDebugStringW(L"Failed to create GraphicsPSO");

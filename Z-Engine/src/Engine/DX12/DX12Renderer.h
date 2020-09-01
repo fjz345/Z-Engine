@@ -3,10 +3,12 @@
 #include "../Renderer.h"
 
 #include "DescriptorHeap.h"
+#include "Resource.h"
 #include "CommandRecorder.h"
 #include "SwapChain.h"
 #include "RootSignature.h"
 #include "PipelineState.h"
+
 
 namespace ZE
 {
@@ -37,6 +39,9 @@ namespace ZE
 		// TEMP
 		RootSignature* rootSig = nullptr;
 		PipelineState* pipelineState = nullptr;
+		DescriptorHeap* dsvHeap = nullptr;
+
+		Resource* depthResource = nullptr;
 
 		// Fences
 		HANDLE eventHandle = nullptr;
@@ -44,6 +49,9 @@ namespace ZE
 		UINT64 fenceFrameValue = 0;
 
 		unsigned int frameCounter = 0;
+
+		void WaitForFrame(unsigned int framesToBeAhead);
+		void WaitForGPU(); // Halts execution
 	};
 
 	
