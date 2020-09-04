@@ -20,7 +20,7 @@ namespace ZE
 	private:
 		Window* _window = nullptr;
 		Renderer* _renderer = nullptr;
-		bool _isRunning = true;
+		bool _isRunning = false;
 
 	};
 

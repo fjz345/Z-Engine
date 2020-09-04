@@ -11,6 +11,8 @@ int WINAPI main(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 
 	ZE::Application* app = ZE::CreateApplication();
 
+	// Setup AssetManager
+
 	app->Run();
 
 	delete app;

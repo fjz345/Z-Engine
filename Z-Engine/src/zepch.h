@@ -35,6 +35,7 @@
 // ZE
 #include "Engine/Core.h"
 #include "Engine/Logging.h"
+#include "Engine/AssetManager.h"
 
 
 // STUFF

@@ -109,6 +109,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Application.h" />
+    <ClInclude Include="src\Engine\AssetManager.h" />
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\DX12\CommandRecorder.h" />
     <ClInclude Include="src\Engine\DX12\DescriptorHeap.h" />
@@ -119,7 +120,12 @@
     <ClInclude Include="src\Engine\DX12\RootSignature.h" />
     <ClInclude Include="src\Engine\DX12\Shader.h" />
     <ClInclude Include="src\Engine\DX12\SwapChain.h" />
+    <ClInclude Include="src\Engine\Material.h" />
+    <ClInclude Include="src\Engine\Mesh.h" />
+    <ClInclude Include="src\Engine\Model.h" />
     <ClInclude Include="src\Engine\Renderer.h" />
+    <ClInclude Include="src\Engine\Scene.h" />
+    <ClInclude Include="src\Engine\Texture.h" />
     <ClInclude Include="src\Engine\Timer.h" />
     <ClInclude Include="src\Engine\win32\Win32Main.cpp" />
     <ClInclude Include="src\Engine\Event.h" />
@@ -131,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Application.cpp" />
+    <ClCompile Include="src\Engine\AssetManager.cpp" />
     <ClCompile Include="src\Engine\DX12\CommandRecorder.cpp" />
     <ClCompile Include="src\Engine\DX12\DescriptorHeap.cpp" />
     <ClCompile Include="src\Engine\DX12\DX12Renderer.cpp" />
@@ -140,6 +147,8 @@
     <ClCompile Include="src\Engine\DX12\RootSignature.cpp" />
     <ClCompile Include="src\Engine\DX12\Shader.cpp" />
     <ClCompile Include="src\Engine\DX12\SwapChain.cpp" />
+    <ClCompile Include="src\Engine\Mesh.cpp" />
+    <ClCompile Include="src\Engine\Model.cpp" />
     <ClCompile Include="src\Engine\Timer.cpp" />
     <ClCompile Include="src\Engine\win32\Win32Functions.h" />
     <ClCompile Include="src\Engine\win32\Win32Window.cpp" />

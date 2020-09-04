@@ -22,6 +22,8 @@ namespace ZE
 
 	void Application::Run()
 	{
+		this->_isRunning = true;
+
 		Timer appTimer;
 		appTimer.Start();
 		double dt, last_dt = 0;
