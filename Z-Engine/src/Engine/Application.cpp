@@ -10,45 +10,56 @@ namespace ZE
 
 	Application::Application()
 	{
-		Timer::Init();
 		_window = Window::Create(L"HEJ", 800, 600);
 		_renderer = Renderer::Create(_window);
+
+		Timer::Init();
+		_appTimer = new Timer();
+		_appTimer->Start();
 	}
 
 	Application::~Application()
 	{
+		delete _renderer;
 		delete _window;
+		delete _appTimer;
 	}
 
 	void Application::Run()
 	{
-		this->_isRunning = true;
+		_isRunning = true;
 
-		Timer appTimer;
-		appTimer.Start();
-		double dt, last_dt = 0;
+		double dt = 0;
+		double time_last = 0;
+		double time_now = 0;
 
 		while (_isRunning)
 		{
 			// DT
-			double now_dt = appTimer.GetElapsedTime();
-			dt = now_dt - last_dt;
-			last_dt = now_dt;
+			time_now = _appTimer->GetElapsedTime();
+			dt = time_now - time_last;
+			time_last = time_now;
+
+			// FPS counter
+			_frameCounter++;
+			float avgFPS = _frameCounter / time_now;
+			_window->SetWindowTitle(std::to_wstring(avgFPS));
+
+			// Events
+
 
 			// Update
-
-			_window->Update();
+			Update(dt);
+			_window->Update(dt);
 
 			// Render
 			_renderer->Render(dt);
-
 		}
-
 	}
 
 	void Application::Update(double dt)
 	{
-
+		
 	}
 }
 

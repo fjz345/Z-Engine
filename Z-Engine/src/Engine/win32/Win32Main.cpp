@@ -16,4 +16,6 @@ int WINAPI main(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 	app->Run();
 
 	delete app;
+
+	return 0;
 }

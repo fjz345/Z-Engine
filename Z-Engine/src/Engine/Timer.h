@@ -2,7 +2,7 @@
 
 namespace ZE
 {
-	static LARGE_INTEGER Frequency;
+	static LARGE_INTEGER s_Frequency;
 
 	class Timer
 	{
@@ -10,10 +10,16 @@ namespace ZE
 		Timer();
 		~Timer();
 
+		// Set's the frequency
 		static void Init();
+
+		// Timestamps start
 		void Start();
+
+		// Timestamps end
 		void Stop();
 
+		// Returns seconds
 		double GetElapsedTime();
 
 	private:

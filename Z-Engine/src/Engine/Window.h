@@ -14,7 +14,7 @@ namespace ZE
 
 		virtual ~Window() {}
 
-		virtual void Update() = 0;
+		virtual void Update(double dt) = 0;
 
 		virtual void SetWindowTitle(std::wstring newTitle) const = 0;
 		virtual bool ExitWindow() const = 0;

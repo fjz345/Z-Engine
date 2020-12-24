@@ -7,6 +7,7 @@ namespace ZE
 {
 	class Window;
 	class Renderer;
+	class Timer;
 
 	class ZE_API Application
 	{
@@ -20,7 +21,10 @@ namespace ZE
 	private:
 		Window* _window = nullptr;
 		Renderer* _renderer = nullptr;
+		Timer* _appTimer = nullptr;
+
 		bool _isRunning = false;
+		unsigned int _frameCounter = 0;
 
 	};
 

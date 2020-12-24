@@ -243,15 +243,13 @@ namespace ZE
 	{
 		IDXGISwapChain4* dx12SwapChain = this->swapChain->GetDXGISwapChain();
 		int backBufferIndex = dx12SwapChain->GetCurrentBackBufferIndex();
-		int commandRecorderIndex = this->frameCounter++ % 2;
+		int commandRecorderIndex = ++this->frameCounter % 2;
+
+		ID3D12GraphicsCommandList5* commandList = this->commandRecorder->GetCommandList(commandRecorderIndex);
+		commandRecorder->Reset(commandRecorderIndex);
 
 		RenderTarget* renderTarget = this->swapChain;
-
-		ID3D12CommandAllocator* commandAllocator = this->commandRecorder->GetCommandAllocator(commandRecorderIndex);
-		ID3D12GraphicsCommandList5* commandList = this->commandRecorder->GetCommandList(commandRecorderIndex);
-
-		commandAllocator->Reset();
-		commandList->Reset(commandAllocator, NULL);
+		ID3D12Resource* renderTargetResource = renderTarget->GetResourceAt(backBufferIndex);
 		
 		commandList->SetGraphicsRootSignature(this->rootSig->GetRootSig());
 		
@@ -262,19 +260,17 @@ namespace ZE
 
 		// Change state on front/backbuffer
 		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
-			this->swapChain->GetResourceAt(backBufferIndex),
+			renderTargetResource,
 			D3D12_RESOURCE_STATE_PRESENT,
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 		DescriptorHeap* renderTargetHeap = renderTarget->GetDescriptorHeap();
 		DescriptorHeap* depthBufferHeap = this->dsvHeap;
 
-
 		D3D12_CPU_DESCRIPTOR_HANDLE cdh = renderTargetHeap->GetCDHAt(backBufferIndex);
 		D3D12_CPU_DESCRIPTOR_HANDLE dsh = depthBufferHeap->GetCDHAt(0);
 
 		commandList->OMSetRenderTargets(1, &cdh, true, &dsh);
-
 
 		float clearColor[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 		commandList->ClearRenderTargetView(cdh, clearColor, 0, nullptr);
@@ -284,8 +280,8 @@ namespace ZE
 		D3D12_RECT* rect = renderTarget->GetScissorRect();
 		commandList->RSSetViewports(1, viewPort);
 		commandList->RSSetScissorRects(1, rect);
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->SetPipelineState(this->pipelineState->GetPSO());
 
 
@@ -298,14 +294,21 @@ namespace ZE
 		
 		// Change state on buffer
 		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
-			renderTarget->GetResourceAt(backBufferIndex),
+			renderTargetResource,
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PRESENT));
 
 		commandList->Close();
 
+
+
+
+
 		ID3D12CommandList* commandLists[1] = { commandList };
 		commandQueue->ExecuteCommandLists(1, commandLists);
+
+
+
 
 		dx12SwapChain->Present(0, 0);
 

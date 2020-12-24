@@ -9,7 +9,7 @@ namespace ZE
 
 		~Win32Window() {}
 
-		void Update() {}
+		void Update(double dt) {}
 
 		inline HWND* GetHWND() { return &_hwnd; }
 

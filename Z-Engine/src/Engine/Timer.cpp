@@ -12,7 +12,7 @@ ZE::Timer::~Timer()
 
 void ZE::Timer::Init()
 {
-	QueryPerformanceFrequency(&Frequency);
+	QueryPerformanceFrequency(&s_Frequency);
 }
 
 void ZE::Timer::Start()
@@ -34,7 +34,7 @@ double ZE::Timer::GetElapsedTime()
 
 	ElapsedMicroseconds.QuadPart = nowTime.QuadPart - _startTime.QuadPart;
 	ElapsedMicroseconds.QuadPart *= 1000000;
-	ElapsedMicroseconds.QuadPart /= Frequency.QuadPart;
+	ElapsedMicroseconds.QuadPart /= s_Frequency.QuadPart;
 
 	double seconds = ElapsedMicroseconds.QuadPart / (double)1000000;
 
