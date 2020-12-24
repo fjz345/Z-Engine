@@ -33,17 +33,31 @@ namespace ZE
 		double time_last = 0;
 		double time_now = 0;
 
+		unsigned int fps_frameCounter = 0;
+		double fps_last_shown = 0;
+
 		while (_isRunning)
 		{
+			_frameCounter++;
+			fps_frameCounter++;
+
 			// DT
 			time_now = _appTimer->GetElapsedTime();
 			dt = time_now - time_last;
 			time_last = time_now;
 
 			// FPS counter
-			_frameCounter++;
-			float avgFPS = _frameCounter / time_now;
-			_window->SetWindowTitle(std::to_wstring(avgFPS));
+			// If not updated fps in 2 seconds
+			if (time_now - fps_last_shown >= 1)
+			{
+				// Update it
+				float avgFPS = fps_frameCounter / (time_now - fps_last_shown);
+				_window->SetWindowTitle(std::to_wstring(avgFPS));
+
+				// Reset counters
+				fps_frameCounter = 0;
+				fps_last_shown = time_now;
+			}
 
 			// Events
 

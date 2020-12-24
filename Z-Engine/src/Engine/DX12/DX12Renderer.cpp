@@ -309,8 +309,8 @@ namespace ZE
 
 
 
-
-		dx12SwapChain->Present(0, 0);
+		DXGI_PRESENT_PARAMETERS presetParams = { };
+		dx12SwapChain->Present1(0, 0, &presetParams);
 
 		WaitForGPU();
 	}
