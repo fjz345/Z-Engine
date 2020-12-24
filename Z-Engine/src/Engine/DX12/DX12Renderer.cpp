@@ -309,8 +309,7 @@ namespace ZE
 
 
 
-		DXGI_PRESENT_PARAMETERS presetParams = { };
-		dx12SwapChain->Present1(0, 0, &presetParams);
+		dx12SwapChain->Present(0, DXGI_PRESENT_ALLOW_TEARING);
 
 		WaitForGPU();
 	}

@@ -17,7 +17,6 @@ namespace ZE
 		virtual void Update(double dt) = 0;
 
 		virtual void SetWindowTitle(std::wstring newTitle) const = 0;
-		virtual bool ExitWindow() const = 0;
 
 		inline bool IsFullscreen() const;
 		inline unsigned int GetWidth() const;

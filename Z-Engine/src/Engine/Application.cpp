@@ -35,6 +35,7 @@ namespace ZE
 
 		unsigned int fps_frameCounter = 0;
 		double fps_last_shown = 0;
+		const double fps_updateRate = 1; // seconds / update
 
 		while (_isRunning)
 		{
@@ -48,11 +49,11 @@ namespace ZE
 
 			// FPS counter
 			// If not updated fps in 2 seconds
-			if (time_now - fps_last_shown >= 1)
+			if (time_now - fps_last_shown >= fps_updateRate)
 			{
 				// Update it
 				float avgFPS = fps_frameCounter / (time_now - fps_last_shown);
-				_window->SetWindowTitle(std::to_wstring(avgFPS));
+				_window->SetWindowTitle(std::to_wstring((int)avgFPS));
 
 				// Reset counters
 				fps_frameCounter = 0;
@@ -60,6 +61,7 @@ namespace ZE
 			}
 
 			// Events
+			
 
 
 			// Update

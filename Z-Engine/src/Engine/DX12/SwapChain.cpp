@@ -32,6 +32,7 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	scDesc.SampleDesc.Count = 1;
+	scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
 
 	IDXGISwapChain1* swapChain1 = nullptr;
 	HRESULT a = S_OK;
@@ -66,6 +67,10 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 
 	this->CreateViewport(this->width, this->height);
 	this->CreateScissorRect(this->width, this->height);
+
+	IDXGIOutput* output;
+	swapChain->GetContainingOutput(&output);
+	//swapChain->SetFullscreenState(true, output);
 }
 
 ZE::SwapChain::~SwapChain()

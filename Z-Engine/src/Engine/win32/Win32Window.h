@@ -7,14 +7,13 @@ namespace ZE
 	public:
 		Win32Window(HINSTANCE hInstance, int nCmdShow, unsigned int screenWidth, unsigned int screenHeight, bool fullscreen, LPCTSTR windowName, LPCTSTR windowTitle);
 
-		~Win32Window() {}
+		~Win32Window();
 
-		void Update(double dt) {}
+		void Update(double dt);
 
 		inline HWND* GetHWND() { return &_hwnd; }
 
-		void SetWindowTitle(std::wstring newTitle) const { SetWindowTextW(this->_hwnd, newTitle.c_str()); }
-		bool ExitWindow() const;
+		void SetWindowTitle(std::wstring newTitle) const;
 
 	private:
 		HWND _hwnd = nullptr;

@@ -12,6 +12,8 @@ namespace ZE
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		//std::printf("%x\n", msg);
+
 		switch (msg)
 		{
 		case WM_KEYDOWN:
@@ -22,14 +24,17 @@ namespace ZE
 					DestroyWindow(hWnd);
 				}
 			}
-
 			return 0;
 
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
+
+		default:
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 		}
-		return DefWindowProc(hWnd, msg, wParam, lParam);
+
+		return 0;
 	}
 
 	std::string GetLastErrorAsString()
@@ -106,23 +111,23 @@ namespace ZE
 		UpdateWindow(this->_hwnd);
 	}
 
-	bool Win32Window::ExitWindow() const
+	Win32Window::~Win32Window()
 	{
-		bool closeWindow = false;
-		MSG msg = { 0 };
-
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);	// Går in i "CALLBACK" funktionen
-
-			if (msg.message == WM_QUIT)
-			{
-				closeWindow = true;
-			}
-		}
-		return closeWindow;
 	}
 
+	void Win32Window::Update(double dt)
+	{
+		MSG msg = { };
+
+		while (PeekMessage(&msg, _hwnd, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+
+	void Win32Window::SetWindowTitle(std::wstring newTitle) const
+	{
+		SetWindowTextW(this->_hwnd, newTitle.c_str());
+	}
 }
