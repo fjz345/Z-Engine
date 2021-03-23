@@ -39,7 +39,6 @@ namespace ZE
 
 		while (_isRunning)
 		{
-			_frameCounter++;
 			fps_frameCounter++;
 
 			// DT

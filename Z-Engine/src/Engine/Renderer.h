@@ -23,6 +23,10 @@ namespace ZE
 	protected:
 		Renderer(Window* renderTarget = nullptr) : _renderTarget(renderTarget) {}
 
+		virtual void WaitForGPU() = 0;
+
+		unsigned int _frameCounter = 0;
+
 		Window* _renderTarget = nullptr;
 	};
 

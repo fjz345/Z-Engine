@@ -48,8 +48,6 @@ namespace ZE
 		ID3D12Fence1* fenceFrame = nullptr;
 		UINT64 fenceFrameValue = 0;
 
-		unsigned int frameCounter = 0;
-
 		void WaitForFrame(unsigned int framesToBeAhead);
 		void WaitForGPU(); // Halts execution
 	};

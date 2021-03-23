@@ -241,12 +241,16 @@ namespace ZE
 
 	void DX12Renderer::Render(double dt)
 	{
+		_frameCounter++;
+
 		IDXGISwapChain4* dx12SwapChain = this->swapChain->GetDXGISwapChain();
 		int backBufferIndex = dx12SwapChain->GetCurrentBackBufferIndex();
-		int commandRecorderIndex = ++this->frameCounter % 2;
+		int commandRecorderIndex = ++this->_frameCounter % 2;
 
 		ID3D12GraphicsCommandList5* commandList = this->commandRecorder->GetCommandList(commandRecorderIndex);
 		commandRecorder->Reset(commandRecorderIndex);
+
+		D3D12_RESOURCE_BARRIER transition;
 
 		RenderTarget* renderTarget = this->swapChain;
 		ID3D12Resource* renderTargetResource = renderTarget->GetResourceAt(backBufferIndex);
@@ -259,10 +263,11 @@ namespace ZE
 		commandList->SetGraphicsRootDescriptorTable(RS::CBVS, this->commonHeap->GetGDHAt(0));
 
 		// Change state on front/backbuffer
-		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
+		transition = CD3DX12_RESOURCE_BARRIER::Transition(
 			renderTargetResource,
 			D3D12_RESOURCE_STATE_PRESENT,
-			D3D12_RESOURCE_STATE_RENDER_TARGET));
+			D3D12_RESOURCE_STATE_RENDER_TARGET);
+		commandList->ResourceBarrier(1, &transition);
 
 		DescriptorHeap* renderTargetHeap = renderTarget->GetDescriptorHeap();
 		DescriptorHeap* depthBufferHeap = this->dsvHeap;
@@ -293,10 +298,11 @@ namespace ZE
 
 		
 		// Change state on buffer
-		commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
+		transition = CD3DX12_RESOURCE_BARRIER::Transition(
 			renderTargetResource,
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_PRESENT));
+			D3D12_RESOURCE_STATE_PRESENT);
+		commandList->ResourceBarrier(1, &transition);
 
 		commandList->Close();
 

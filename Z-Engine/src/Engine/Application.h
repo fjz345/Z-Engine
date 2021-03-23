@@ -24,7 +24,6 @@ namespace ZE
 		Timer* _appTimer = nullptr;
 
 		bool _isRunning = false;
-		unsigned int _frameCounter = 0;
 
 	};
 
