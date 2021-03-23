@@ -10,9 +10,8 @@ namespace ZE
 	}
 
 	DX12Renderer::DX12Renderer(Window* renderTarget)
+		: Renderer(renderTarget)
 	{
-		this->_renderTarget = renderTarget;
-
 		//INIT DX12
 
 		// InitDevice
@@ -237,6 +236,21 @@ namespace ZE
 
 		// Create Main DescriptorHeap
 		this->commonHeap = new DescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 100, true);
+	}
+
+	DX12Renderer::~DX12Renderer()
+	{
+		delete commonHeap;
+		delete swapChain;
+		delete dsvHeap;
+		delete commandRecorder;
+		delete rootSig;
+		delete depthResource;
+		delete pipelineState;
+
+		SAFE_RELEASE(&commandQueue);
+		SAFE_RELEASE(&fenceFrame);
+		SAFE_RELEASE(&device);
 	}
 
 	void DX12Renderer::Render(double dt)

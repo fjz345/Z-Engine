@@ -22,7 +22,11 @@ namespace ZE
 		inline unsigned int GetWidth() const;
 		inline unsigned int GetHeight() const;
 
+		
+
 	protected:
+		friend class Application;
+
 		Window(std::wstring title, unsigned int width, unsigned int height, bool fullscreen)
 			: _title(title), _width(width), _height(height), _fullscreen(fullscreen) {}
 
@@ -31,6 +35,7 @@ namespace ZE
 
 		std::wstring _title = L"NoTitle";
 		bool _fullscreen = false;
+		bool _isQuit = false;
 	};
 
 

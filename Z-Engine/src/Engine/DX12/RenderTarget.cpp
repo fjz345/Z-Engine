@@ -8,14 +8,14 @@ ZE::RenderTarget::RenderTarget(ID3D12Device5* device, unsigned int width, unsign
 	this->resources.resize(nrOfResources);
 	this->width = width;
 	this->height = height;
-
+	
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
 	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
 	heapProp.CreationNodeMask = 1; //used when multi-gpu
 	heapProp.VisibleNodeMask = 1; //used when multi-gpu
 	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-
+	
 	D3D12_RESOURCE_DESC resourceDesc = {};
 	resourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	resourceDesc.Width = width;
@@ -27,12 +27,12 @@ ZE::RenderTarget::RenderTarget(ID3D12Device5* device, unsigned int width, unsign
 	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-
+	
 	// View Desc
 	D3D12_RENDER_TARGET_VIEW_DESC viewDesc = {};
 	viewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	viewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-
+	
 	// Create resource
 	for (int i = 0; i < nrOfResources; i++)
 	{
@@ -44,13 +44,13 @@ ZE::RenderTarget::RenderTarget(ID3D12Device5* device, unsigned int width, unsign
 			nullptr,
 			IID_PPV_ARGS(&this->resources[i])
 		);
-
+	
 		D3D12_CPU_DESCRIPTOR_HANDLE cdh = this->dHeap->GetCDHAt(i);
 		device->CreateRenderTargetView(this->resources[i], &viewDesc, cdh);
 	}
-
-	this->CreateViewport(width, height);
-	this->CreateScissorRect(width, height);
+	
+	this->SetViewport(width, height);
+	this->SetScissorRect(width, height);
 }
 
 ZE::RenderTarget::~RenderTarget()
@@ -63,7 +63,7 @@ ZE::RenderTarget::~RenderTarget()
 	delete this->dHeap;
 }
 
-void ZE::RenderTarget::CreateViewport(unsigned int width, unsigned int height)
+void ZE::RenderTarget::SetViewport(unsigned int width, unsigned int height)
 {
 	this->viewport.TopLeftX = 0.0f;
 	this->viewport.TopLeftY = 0.0f;
@@ -73,7 +73,7 @@ void ZE::RenderTarget::CreateViewport(unsigned int width, unsigned int height)
 	this->viewport.MaxDepth = 1.0f;
 }
 
-void ZE::RenderTarget::CreateScissorRect(unsigned int width, unsigned int height)
+void ZE::RenderTarget::SetScissorRect(unsigned int width, unsigned int height)
 {
 	this->scissorRect.left = (long)0;
 	this->scissorRect.right = (long)width;

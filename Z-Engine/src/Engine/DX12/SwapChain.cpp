@@ -65,17 +65,19 @@ ZE::SwapChain::SwapChain(ID3D12Device5* device, HWND* hwnd, ID3D12CommandQueue* 
 		device->CreateRenderTargetView(this->resources[i], nullptr, cdh);
 	}
 
-	this->CreateViewport(this->width, this->height);
-	this->CreateScissorRect(this->width, this->height);
+	this->SetViewport(this->width, this->height);
+	this->SetScissorRect(this->width, this->height);
 
 	IDXGIOutput* output;
 	swapChain->GetContainingOutput(&output);
 	//swapChain->SetFullscreenState(true, output);
+
+	SAFE_RELEASE(&output);
 }
 
 ZE::SwapChain::~SwapChain()
 {
-	SAFE_RELEASE(&this->swapChain);
+	SAFE_RELEASE(&swapChain);
 }
 
 IDXGISwapChain4* ZE::SwapChain::GetDXGISwapChain()

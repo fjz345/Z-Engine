@@ -8,6 +8,7 @@ namespace ZE
     {
     public:
         DescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool bShaderVisible = false);
+        ~DescriptorHeap();
 
         inline ID3D12DescriptorHeap* GetID3D12DescriptorHeap() { return _dHeap; }
         inline D3D12_CPU_DESCRIPTOR_HANDLE GetCDHAt(UINT index)

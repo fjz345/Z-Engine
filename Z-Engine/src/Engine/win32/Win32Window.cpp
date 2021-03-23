@@ -19,10 +19,7 @@ namespace ZE
 		case WM_KEYDOWN:
 			if (wParam == VK_ESCAPE)
 			{
-				if (MessageBox(0, L"Are you sure you want to exit?", L"Exit", MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					DestroyWindow(hWnd);
-				}
+				DestroyWindow(hWnd);
 			}
 			return 0;
 
@@ -119,10 +116,15 @@ namespace ZE
 	{
 		MSG msg = { };
 
-		while (PeekMessage(&msg, _hwnd, 0, 0, PM_REMOVE))
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			if (msg.message == WM_QUIT)
+			{
+				_isQuit = true;
+			}
 		}
 	}
 

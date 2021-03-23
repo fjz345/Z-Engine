@@ -37,7 +37,7 @@ namespace ZE
 		double fps_last_shown = 0;
 		const double fps_updateRate = 1; // seconds / update
 
-		while (_isRunning)
+		while (_isRunning && !_window->_isQuit)
 		{
 			fps_frameCounter++;
 
@@ -65,16 +65,15 @@ namespace ZE
 
 			// Update
 			Update(dt);
-			_window->Update(dt);
 
 			// Render
-			_renderer->Render(dt);
+			//_renderer->Render(dt);
 		}
 	}
 
 	void Application::Update(double dt)
 	{
-		
+		_window->Update(dt);
 	}
 }
 

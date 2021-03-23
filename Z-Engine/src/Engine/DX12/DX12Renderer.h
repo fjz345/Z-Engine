@@ -16,7 +16,7 @@ namespace ZE
 	{
 	public:
 		DX12Renderer(Window* renderTarget);
-		~DX12Renderer() {}
+		~DX12Renderer();
 
 		void Render(double dt);
 

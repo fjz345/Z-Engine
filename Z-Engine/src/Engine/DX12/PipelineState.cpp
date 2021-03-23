@@ -34,6 +34,10 @@ namespace ZE
 
 	PipelineState::~PipelineState()
 	{
+		delete VS;
+		delete PS;
+		delete CS;
+
 		SAFE_RELEASE(&this->PSO);
 	}
 
