@@ -10,7 +10,7 @@ namespace ZE
 
 	Application::Application()
 	{
-		_window = Window::Create(L"HEJ", 800, 600);
+		_window = Window::Create(L"Z-Engine", 800, 600);
 		_renderer = Renderer::Create(_window);
 
 		Timer::Init();
