@@ -67,7 +67,7 @@ namespace ZE
 			Update(dt);
 
 			// Render
-			//_renderer->Render(dt);
+			_renderer->Render(dt);
 		}
 	}
 
