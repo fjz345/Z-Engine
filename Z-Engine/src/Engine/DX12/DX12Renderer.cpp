@@ -16,31 +16,31 @@ namespace ZE
 		InitDevice();
 
 		// TODO: Fence klass?
-		device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&this->fenceFrame));
-		this->fenceFrameValue = 0;
+		_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&this->_fenceFrame));
+		this->_fenceFrameValue = 0;
 
 		// Event handle to use for GPU synchronization
-		this->eventHandle = CreateEvent(0, false, false, 0);
+		this->_eventHandle = CreateEvent(0, false, false, 0);
 
 		// Create Main DescriptorHeap
-		this->commonHeap = new DescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 100, true);
+		this->_commonHeap = new DescriptorHeap(_device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 100, true);
 
 		InitCommandQueue();
 
 
 		// TODO: fix platform specific good
-		swapChain = new SwapChain(device, ((Win32Window*)renderTarget)->GetHWND(), this->commandQueue);
+		_swapChain = new SwapChain(_device, ((Win32Window*)renderTarget)->GetHWND(), this->_commandQueue);
 
 
 		InitDepthBuffer();
 
 
 		// Create Command Allocator/Command List
-		this->commandRecorder = new CommandRecorder(this->device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+		this->_commandRecorder = new CommandRecorder(this->_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 
 
 		// Create Rootsignature
-		rootSig = new RootSignature(device);
+		_rootSig = new RootSignature(_device);
 
 		InitPipelineStates();
 		
@@ -48,41 +48,43 @@ namespace ZE
 
 	DX12Renderer::~DX12Renderer()
 	{
-		delete commonHeap;
-		delete swapChain;
-		delete dsvHeap;
-		delete commandRecorder;
-		delete rootSig;
-		delete depthResource;
-		delete pipelineState;
+		WaitForGPU();
 
-		SAFE_RELEASE(&commandQueue);
-		SAFE_RELEASE(&fenceFrame);
-		SAFE_RELEASE(&device);
+		delete _commonHeap;
+		delete _swapChain;
+		delete _dsvHeap;
+		delete _commandRecorder;
+		delete _rootSig;
+		delete _depthResource;
+		delete _pipelineState;
+
+		SAFE_RELEASE(&_commandQueue);
+		SAFE_RELEASE(&_fenceFrame);
+		SAFE_RELEASE(&_device);
 	}
 
 	void DX12Renderer::Render(double dt)
 	{
 		_frameCounter++;
 
-		IDXGISwapChain4* dx12SwapChain = this->swapChain->GetDXGISwapChain();
+		IDXGISwapChain4* dx12SwapChain = this->_swapChain->GetDXGISwapChain();
 		int backBufferIndex = dx12SwapChain->GetCurrentBackBufferIndex();
 		int commandRecorderIndex = ++this->_frameCounter % 2;
 
-		ID3D12GraphicsCommandList5* commandList = this->commandRecorder->GetCommandList(commandRecorderIndex);
-		commandRecorder->Reset(commandRecorderIndex);
+		ID3D12GraphicsCommandList5* commandList = this->_commandRecorder->GetCommandList(commandRecorderIndex);
+		_commandRecorder->Reset(commandRecorderIndex);
 
 		D3D12_RESOURCE_BARRIER transition;
 
-		RenderTarget* renderTarget = this->swapChain;
+		RenderTarget* renderTarget = this->_swapChain;
 		ID3D12Resource* renderTargetResource = renderTarget->GetResourceAt(backBufferIndex);
 		
-		commandList->SetGraphicsRootSignature(this->rootSig->GetRootSig());
+		commandList->SetGraphicsRootSignature(this->_rootSig->GetRootSig());
 		
-		ID3D12DescriptorHeap* bindlessHeap = this->commonHeap->GetID3D12DescriptorHeap();
+		ID3D12DescriptorHeap* bindlessHeap = this->_commonHeap->GetID3D12DescriptorHeap();
 		commandList->SetDescriptorHeaps(1, &bindlessHeap);
 
-		commandList->SetGraphicsRootDescriptorTable(RS::CBVS, this->commonHeap->GetGDHAt(0));
+		commandList->SetGraphicsRootDescriptorTable(RS::CBVS, this->_commonHeap->GetGDHAt(0));
 
 		// Change state on front/backbuffer
 		transition = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -92,7 +94,7 @@ namespace ZE
 		commandList->ResourceBarrier(1, &transition);
 
 		DescriptorHeap* renderTargetHeap = renderTarget->GetDescriptorHeap();
-		DescriptorHeap* depthBufferHeap = this->dsvHeap;
+		DescriptorHeap* depthBufferHeap = this->_dsvHeap;
 
 		D3D12_CPU_DESCRIPTOR_HANDLE cdh = renderTargetHeap->GetCDHAt(backBufferIndex);
 		D3D12_CPU_DESCRIPTOR_HANDLE dsh = depthBufferHeap->GetCDHAt(0);
@@ -109,7 +111,7 @@ namespace ZE
 		commandList->RSSetScissorRects(1, rect);
 
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		commandList->SetPipelineState(this->pipelineState->GetPSO());
+		commandList->SetPipelineState(this->_pipelineState->GetPSO());
 
 
 		// Draw -----------
@@ -133,7 +135,7 @@ namespace ZE
 
 
 		ID3D12CommandList* commandLists[1] = { commandList };
-		commandQueue->ExecuteCommandLists(1, commandLists);
+		_commandQueue->ExecuteCommandLists(1, commandLists);
 
 		WaitForGPU();
 
@@ -191,7 +193,7 @@ namespace ZE
 		if (adapter)
 		{
 			HRESULT hr = S_OK;
-			hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&this->device));
+			hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&this->_device));
 			//Create the actual device.
 			if (SUCCEEDED(hr))
 			{
@@ -204,7 +206,7 @@ namespace ZE
 		{
 			//Create warp device if no adapter was found.
 			factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter));
-			D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device));
+			D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&_device));
 		}
 
 		SAFE_RELEASE(&factory);
@@ -216,7 +218,7 @@ namespace ZE
 		D3D12_COMMAND_QUEUE_DESC desc = {};
 		desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 		HRESULT hr;
-		hr = device->CreateCommandQueue(&desc, IID_PPV_ARGS(&this->commandQueue));
+		hr = _device->CreateCommandQueue(&desc, IID_PPV_ARGS(&this->_commandQueue));
 		if (FAILED(hr))
 		{
 			OutputDebugStringW(L"ERROR: Failed to create Direct CommandQueue");
@@ -246,10 +248,10 @@ namespace ZE
 
 
 		// Create descriptorHeap for the dsv
-		this->dsvHeap = new DescriptorHeap(this->device, D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
+		this->_dsvHeap = new DescriptorHeap(this->_device, D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 
-		this->depthResource = new Resource(
-			device,
+		this->_depthResource = new Resource(
+			_device,
 			&resourceDesc,
 			&clearValue,
 			L"Resource_Depth",
@@ -260,8 +262,8 @@ namespace ZE
 		depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 		depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
 
-		D3D12_CPU_DESCRIPTOR_HANDLE cdh = dsvHeap->GetCDHAt(0);
-		device->CreateDepthStencilView(depthResource->GetID3D12Resource1(), &depthStencilDesc, cdh);
+		D3D12_CPU_DESCRIPTOR_HANDLE cdh = _dsvHeap->GetCDHAt(0);
+		_device->CreateDepthStencilView(_depthResource->GetID3D12Resource1(), &depthStencilDesc, cdh);
 	}
 
 	void DX12Renderer::InitPipelineStates()
@@ -306,7 +308,7 @@ namespace ZE
 		gpsd.DepthStencilState = dsd;
 		gpsd.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-		pipelineState = new PipelineState(device, rootSig, L"HLSL/test.vs", L"HLSL/test.ps", &gpsd);
+		_pipelineState = new PipelineState(_device, _rootSig, L"HLSL/test.vs", L"HLSL/test.ps", &gpsd);
 	}
 
 	void DX12Renderer::WaitForFrame(unsigned int framesToBeAhead)
@@ -315,24 +317,24 @@ namespace ZE
 		unsigned int fenceValuesToBeAhead = framesToBeAhead * nrOfFenceChangesPerFrame;
 
 		//Wait if the CPU is "framesToBeAhead" number of frames ahead of the GPU
-		if (this->fenceFrame->GetCompletedValue() < this->fenceFrameValue - fenceValuesToBeAhead)
+		if (this->_fenceFrame->GetCompletedValue() < this->_fenceFrameValue - fenceValuesToBeAhead)
 		{
-			this->fenceFrame->SetEventOnCompletion(this->fenceFrameValue - fenceValuesToBeAhead, this->eventHandle);
-			WaitForSingleObject(this->eventHandle, INFINITE);
+			this->_fenceFrame->SetEventOnCompletion(this->_fenceFrameValue - fenceValuesToBeAhead, this->_eventHandle);
+			WaitForSingleObject(this->_eventHandle, INFINITE);
 		}
 	}
 	void DX12Renderer::WaitForGPU()
 	{
 		// Signal and increment the fence value.
-		unsigned int oldFenceValue = this->fenceFrameValue;
-		this->commandQueue->Signal(this->fenceFrame, oldFenceValue);
-		this->fenceFrameValue++;
+		unsigned int oldFenceValue = this->_fenceFrameValue;
+		this->_commandQueue->Signal(this->_fenceFrame, oldFenceValue);
+		this->_fenceFrameValue++;
 
 		// Wait until command queue is done.
-		if (this->fenceFrame->GetCompletedValue() < oldFenceValue)
+		if (this->_fenceFrame->GetCompletedValue() < oldFenceValue)
 		{
-			this->fenceFrame->SetEventOnCompletion(oldFenceValue, eventHandle);
-			WaitForSingleObject(eventHandle, INFINITE);
+			this->_fenceFrame->SetEventOnCompletion(oldFenceValue, _eventHandle);
+			WaitForSingleObject(_eventHandle, INFINITE);
 		}
 	}
 }

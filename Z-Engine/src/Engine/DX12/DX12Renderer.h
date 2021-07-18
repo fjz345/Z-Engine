@@ -22,31 +22,31 @@ namespace ZE
 
 	private:
 		// Device
-		ID3D12Device5* device = nullptr;
+		ID3D12Device5* _device = nullptr;
 
 		// Command Queue
-		ID3D12CommandQueue* commandQueue = nullptr;
+		ID3D12CommandQueue* _commandQueue = nullptr;
 		
 		// CommandRecorder
-		CommandRecorder* commandRecorder = nullptr;
+		CommandRecorder* _commandRecorder = nullptr;
 
 		// DescriptorHeap
-		DescriptorHeap* commonHeap = nullptr;
+		DescriptorHeap* _commonHeap = nullptr;
 
 		// SwapChain
-		SwapChain* swapChain = nullptr;
+		SwapChain* _swapChain = nullptr;
 
 		// TEMP
-		RootSignature* rootSig = nullptr;
-		PipelineState* pipelineState = nullptr;
-		DescriptorHeap* dsvHeap = nullptr;
+		RootSignature* _rootSig = nullptr;
+		PipelineState* _pipelineState = nullptr;
+		DescriptorHeap* _dsvHeap = nullptr;
 
-		Resource* depthResource = nullptr;
+		Resource* _depthResource = nullptr;
 
 		// Fences
-		HANDLE eventHandle = nullptr;
-		ID3D12Fence1* fenceFrame = nullptr;
-		UINT64 fenceFrameValue = 0;
+		ID3D12Fence1* _fenceFrame = nullptr;
+		UINT64 _fenceFrameValue = 0;
+		HANDLE _eventHandle = nullptr;
 
 		// Init functions
 		void InitDevice();
