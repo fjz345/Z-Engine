@@ -7,7 +7,7 @@
 class AssetManager
 {
 public:
-	static AssetManager* Get(ID3D12Device5* device = nullptr);
+	static AssetManager* Get();
 
 	~AssetManager();
 
@@ -27,11 +27,29 @@ public:
 		Model* cubeModel = new Model(meshesVec);
 
 		AddModelToLoaded("tempCubeModel", cubeModel);
+	};
 
+	void TempCreateManualScreenSpaceTriangle()
+	{
+		float vertexCoords[9] = {  // Coordinates for the vertices of a cube.
+		   0.0, 0.5, 0.0,
+		   0.5, -0.5, 0.0,
+		   -0.5, -0.5, 0.0};
+
+		std::vector<float>* vertsVec = new std::vector<float>(vertexCoords, vertexCoords + 9);
+
+		Mesh* triMesh = new Mesh(vertsVec);
+		AddMeshToLoaded("tempTriMesh", triMesh);
+
+		std::vector<Mesh*>* meshesVec = new std::vector<Mesh*>();
+		meshesVec->push_back(triMesh);
+		Model* triModel = new Model(meshesVec);
+
+		AddModelToLoaded("tempTriModel", triModel);
 	};
 
 private:
-	AssetManager(ID3D12Device5* device = nullptr) {};
+	AssetManager() {};
 	AssetManager(AssetManager const&) = delete;
 	void operator=(AssetManager const&) = delete;
 

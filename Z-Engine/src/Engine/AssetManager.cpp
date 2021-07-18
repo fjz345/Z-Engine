@@ -1,9 +1,9 @@
 #include "zepch.h"
 #include "AssetManager.h"
 
-AssetManager* AssetManager::Get(ID3D12Device5* device)
+AssetManager* AssetManager::Get()
 {
-	static AssetManager instance(device);
+	static AssetManager instance;
 
 	return &instance;
 }

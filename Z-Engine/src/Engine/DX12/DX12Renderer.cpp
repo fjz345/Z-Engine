@@ -131,9 +131,6 @@ namespace ZE
 		commandList->Close();
 
 
-
-
-
 		ID3D12CommandList* commandLists[1] = { commandList };
 		_commandQueue->ExecuteCommandLists(1, commandLists);
 

@@ -9,5 +9,5 @@ public:
 	~Model();
 	
 private:
-	std::vector<Mesh*>* _meshes;
+	std::vector<Mesh*>* _meshes = nullptr;
 };
