@@ -48,6 +48,12 @@ namespace ZE
 		ID3D12Fence1* fenceFrame = nullptr;
 		UINT64 fenceFrameValue = 0;
 
+		// Init functions
+		void InitDevice();
+		void InitCommandQueue();
+		void InitDepthBuffer();
+		void InitPipelineStates();
+
 		void WaitForFrame(unsigned int framesToBeAhead);
 		void WaitForGPU(); // Halts execution
 	};
