@@ -9,6 +9,9 @@
 #include "RootSignature.h"
 #include "PipelineState.h"
 
+#if _DEBUG
+#include "dxgidebug.h"
+#endif
 
 namespace ZE
 {

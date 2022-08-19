@@ -82,7 +82,6 @@ namespace ZE
 
 		auto ret = RegisterClassEx(&wc);
 		ZE_ASSERT(ret, ZE_ERROR("Error registering window class"))
-
 		// This structure describes the window
 		this->_hwnd = CreateWindowEx(NULL,
 			windowName,

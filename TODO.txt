@@ -15,3 +15,7 @@ Multithread rendering
 Revisit Multiplatform
 Revisit Window
 
+
+Fix Build warnings
+Fix Log string formating
+Fix Assert formating

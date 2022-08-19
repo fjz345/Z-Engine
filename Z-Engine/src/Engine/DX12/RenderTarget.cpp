@@ -34,7 +34,7 @@ ZE::RenderTarget::RenderTarget(ID3D12Device5* device, unsigned int width, unsign
 	viewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	
 	// Create resource
-	for (int i = 0; i < nrOfResources; i++)
+	for (int32_t i = 0; i < (int32_t)nrOfResources; i++)
 	{
 		device->CreateCommittedResource(
 			&heapProp,

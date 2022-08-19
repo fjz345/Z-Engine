@@ -31,7 +31,7 @@ public:
         std::wstring name = L"RESOURCE_NONAME",
         D3D12_RESOURCE_STATES startState = D3D12_RESOURCE_STATE_COMMON);
 
-    virtual unsigned int GetSize() const;
+    virtual unsigned long long GetSize() const;
     ID3D12Resource1* GetID3D12Resource1() const;
     ID3D12Resource1** GetID3D12Resource1PP();
     D3D12_GPU_VIRTUAL_ADDRESS GetGPUVirtualAdress() const;

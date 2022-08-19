@@ -51,7 +51,7 @@ namespace ZE
 			if (time_now - fps_last_shown >= fps_updateRate)
 			{
 				// Update it
-				float avgFPS = fps_frameCounter / (time_now - fps_last_shown);
+				float avgFPS = fps_frameCounter / (float)(time_now - fps_last_shown);
 				_window->SetWindowTitle(std::to_wstring((int)avgFPS));
 
 				// Reset counters

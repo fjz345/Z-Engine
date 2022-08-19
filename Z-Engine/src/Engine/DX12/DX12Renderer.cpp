@@ -15,7 +15,7 @@ namespace ZE
 		//INIT DX12
 		InitDevice();
 
-		// TODO: Fence klass?
+		// TODO: Fence class?
 		_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&this->_fenceFrame));
 		this->_fenceFrameValue = 0;
 

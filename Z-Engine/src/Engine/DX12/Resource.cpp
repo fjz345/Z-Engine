@@ -62,7 +62,7 @@ Resource::~Resource()
 	SAFE_RELEASE(&this->resource);
 }
 
-unsigned int Resource::GetSize() const
+unsigned long long Resource::GetSize() const
 {
 	return this->entrySize;
 }

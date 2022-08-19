@@ -4,7 +4,7 @@
 #include "Model.h"
 #include "Material.h"
 
-class AssetManager
+class ZE_API AssetManager
 {
 public:
 	static AssetManager* Get();
